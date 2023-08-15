@@ -4,6 +4,8 @@ import org.springframework.context.annotation.*;
 import ru.otus.spring.domain.Person;
 import ru.otus.spring.service.PersonService;
 
+import java.util.Optional;
+
 @EnableAspectJAutoProxy
 @Configuration
 @ComponentScan
@@ -15,7 +17,8 @@ public class Main {
 
         PersonService service = context.getBean(PersonService.class);
 
-        Person ivan = service.getByName("Ivan");
-        System.out.println("name: " + ivan.getName() + " age: " + ivan.getAge());
+        Optional<Person> ivan = Optional.ofNullable(service.getByName("Ivan"));
+        System.out.println(ivan.map(p->"name: " + p.getName() + " age: " + p.getAge()).
+                orElse("Empty result"));
     }
 }
